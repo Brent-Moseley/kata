@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <style>
+      #results  {
+      	width: 500px;
+      	height: 100px;
+      	margin: 6px;
+      	padding: 10px;
+      	background-color: #AAA;
+      	border-radius:10px;
+      }
+      </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () { 
+      	var list = [1,4,6,8,12,19,22,26,34];
+      	var target = 19;
+      	addResults ('Results:');
+      	addResults (list);
+      	addResults ('Seeking: ' + target.toString());
+      });
+
+      function addResults (addMe) {
+      	if (typeof addMe !== 'string') {
+      		addMe = addMe.toString();
+      	}
+      	$('#results').html($('#results').html() + addMe + '</br>');
+      }
+
+    </script>  
+  </head>
+
+  <body>
+    <h2>Binary Search</h2>
+    <div id="results"></div>
+  </body>
+</html>
