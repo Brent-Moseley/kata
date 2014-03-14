@@ -13,12 +13,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>
       $(document).ready(function () { 
-      	var list = [1,4,6,8,12,19,22,26,34];
+      	var list = [1,4,6,8,12,19,22,26,34,37,42,56,61,78,79,83,88,92,94,96,98];
       	var target = 19;
       	addResults ('Results:');
       	addResults (list);
       	addResults ('Seeking: ' + target.toString());
+      	binarySearch1 (list, target);
       });
+
+      function binarySearch1 (list, target) {
+        var indx = Math.floor(list.length / 2);     // starting position
+        done = false;
+        while (!done) {
+          if (list[indx] === target) done = true;
+          else 
+
+          if (list[indx] > target) indx = Math.floor(indx / 2);
+          else if (list[indx] < target) indx = indx + Math.floor(indx / 2);
+        }
+
+      }
 
       function addResults (addMe) {
       	if (typeof addMe !== 'string') {
