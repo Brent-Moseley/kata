@@ -23,13 +23,43 @@
 
       function binarySearch1 (list, target) {
         var indx = Math.floor(list.length / 2);     // starting position
+        var min = 0;
+        var max = list.length - 1;
+        var iteration = 1;
         done = false;
+        
         while (!done) {
-          if (list[indx] === target) done = true;
-          else 
+          report();
+          if (list[indx] === target) done = true;   // found it
+          else if (target < list[indx]) {
+          	// target must be in the lower half
+          	max = indx;
+          	indx = Math.floor((max - min) / 2);
+          	if (min + 1 == max) {
+          		console.log ("out of numbers...");
+          		// ran out of numbers
+          		done = true;
+          	}
+          }
+          else if (target > list[indx]) {
+          	// target must be in the upper half
+          	min = indx;
+          	indx = Math.floor((max - min) / 2);
+          	if (min + 1 == max) {
+          		console.log ("out of numbers...");
+          		done = true;
+          		// ran out of numbers
+          	}          	
+          }
+        }
+        return;
 
-          if (list[indx] > target) indx = Math.floor(indx / 2);
-          else if (list[indx] < target) indx = indx + Math.floor(indx / 2);
+        function report () {
+        	console.log ('Iteration: ' + iteration);
+        	console.log ('   min: ' + min);
+        	console.log ('   max: ' + max);
+        	console.log ('   val: ' + list[indx]);
+        	return;
         }
 
       }
