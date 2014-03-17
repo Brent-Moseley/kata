@@ -14,7 +14,7 @@
     <script>
       $(document).ready(function () { 
       	var list = [1,4,6,8,12,19,22,26,34,37,42,56,61,78,79,83,88,92,94,96,98];
-      	var target = 19;
+      	var target = 24;
       	addResults ('Results:');
       	addResults (list);
       	addResults ('Seeking: ' + target.toString());
@@ -22,6 +22,10 @@
       });
 
       function binarySearch1 (list, target) {
+        if (list.length == 0) {
+          addResults ("Nothing to search.");
+          return;
+        }
         var indx = Math.floor(list.length / 2);     // starting position
         var min = 0;
         var max = list.length - 1;
@@ -30,29 +34,42 @@
         
         while (!done) {
           report();
-          if (list[indx] === target) done = true;   // found it
+          iteration++;
+          if (iteration > 10) return;
+          if (list[indx] === target)  { 
+            done = true;   // found it
+            addResults ("Found at Index " + indx.toString() + " value = " + list[indx].toString());
+          }
           else if (target < list[indx]) {
           	// target must be in the lower half
           	max = indx;
-          	indx = Math.floor((max - min) / 2);
-          	if (min + 1 == max) {
-          		console.log ("out of numbers...");
-          		// ran out of numbers
+          	indx = min + Math.floor((max - min) / 2);
+          	if (min + 1 == max || min == max) {
+              // ran out of numbers
+              found = considerEndpoints (min, max);
+          		if (found == 0) addResults ("out of numbers, around number " + list[indx].toString());
           		done = true;
           	}
           }
           else if (target > list[indx]) {
           	// target must be in the upper half
           	min = indx;
-          	indx = Math.floor((max - min) / 2);
-          	if (min + 1 == max) {
-          		console.log ("out of numbers...");
+          	indx = min + Math.floor((max - min) / 2);
+          	if (min + 1 == max || min == max) {
+              // ran out of numbers
+              found = considerEndpoints (min, max);
+          		if (found == 0) addResults ("out of numbers, around number " + list[indx].toString());
           		done = true;
-          		// ran out of numbers
           	}          	
           }
         }
         return;
+
+        function considerEndpoints (min, max) {
+          if (list[min] === target) addResults ("Found at min, " + target.toString());
+          else if (list[max] === target) addResults ("Found at max, " + target.toString());
+          else return 0;
+        }
 
         function report () {
         	console.log ('Iteration: ' + iteration);
