@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <style>
+      #results  {
+      	width: 500px;
+      	height: 100px;
+      	margin: 6px;
+      	padding: 10px;
+      	background-color: #AAA;
+      	border-radius:10px;
+      }
+      </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () { 
+      	var list = [1,4,6,8,12,19,22,26,34,37,42,56,61,78,79,83,88,92,94,96,98];
+      	var target = 59;
+      	addResults ('Results:');
+      	addResults (list);
+      	addResults ('Seeking: ' + target.toString());
+      	binarySearch2 (list, target);
+      });
+
+      function binarySearch2 (list, target) {
+        if (list.length == 0) {
+          addResults ("Nothing to search.");
+          return;
+        }
+        var size = list.length -1;
+        var indx = Math.round (target / list[size] * size);   // set starting position based on percent estimation  
+        var min = indx - Math.round(size * 0.2);      // set intial min as 20% below indx
+        if (min < 0) min = 0;
+        var max = indx + Math.round(size * 0.2);      // set intial max as 20% above indx
+        if (max > size) max = size;
+        var iteration = 1;
+        done = false;
+        
+        while (!done) {
+          report();
+          iteration++;
+          if (iteration > 10) return;
+          if (list[indx] === target)  { 
+            done = true;   // found it
+            addResults ("Found at Index " + indx.toString() + " value = " + list[indx].toString());
+          }
+          else if (target < list[indx]) {
+          	// target must be in the lower half
+          	max = indx;
+          	indx = min + Math.floor((max - min) / 2);
+          	if (min + 1 == max || min == max) {
+              // ran out of numbers
+              found = considerEndpoints (min, max);
+          		if (found == 0) addResults ("out of numbers, around number " + list[indx].toString());
+          		done = true;
+          	}
+          }
+          else if (target > list[indx]) {
+          	// target must be in the upper half
+          	min = indx;
+          	indx = min + Math.floor((max - min) / 2);
+          	if (min + 1 == max || min == max) {
+              // ran out of numbers
+              found = considerEndpoints (min, max);
+          		if (found == 0) addResults ("out of numbers, around number " + list[indx].toString());
+          		done = true;
+          	}          	
+          }
+        }
+        return;
+
+        function considerEndpoints (min, max) {
+          if (list[min] === target) addResults ("Found at min, " + target.toString());
+          else if (list[max] === target) addResults ("Found at max, " + target.toString());
+          else return 0;
+        }
+
+        function report () {
+        	console.log ('Iteration: ' + iteration);
+          console.log ('   indx: ' + indx);
+        	console.log ('   min: ' + min);
+        	console.log ('   max: ' + max);
+        	console.log ('   val: ' + list[indx]);
+        	return;
+        }
+
+      }
+
+      function addResults (addMe) {
+      	if (typeof addMe !== 'string') {
+      		addMe = addMe.toString();
+      	}
+      	$('#results').html($('#results').html() + addMe + '</br>');
+      }
+
+    </script>  
+  </head>
+
+  <body>
+    <h2>Binary Search</h2>
+    <div id="results"></div>
+  </body>
+</html>
