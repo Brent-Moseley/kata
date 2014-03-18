@@ -2,7 +2,7 @@
   <head>
     <style>
       #results  {
-      	width: 500px;
+      	width: 750px;
       	height: 100px;
       	margin: 6px;
       	padding: 10px;
@@ -13,8 +13,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>
       $(document).ready(function () { 
-      	var list = [1,4,6,8,12,19,22,26,34,37,42,56,61,78,79,83,88,92,94,96,98];
-      	var target = 59;
+      	//var list = [1,4,6,8,12,19,22,26,34,37,42,56,61,78,79,83,88,92,94,96,98];
+        var list = [1,4,6,8,12,19,22,26,78,79,83,88,92,94,96,98,99,99,110,112,113,116,155,157,159,162,166,168,170,170,170,289];
+      	var target = 116 ;
       	addResults ('Results:');
       	addResults (list);
       	addResults ('Seeking: ' + target.toString());
@@ -26,8 +27,8 @@
           addResults ("Nothing to search.");
           return;
         }
-        var size = list.length -1;
-        var indx = Math.round (target / list[size] * size);   // set starting position based on percent estimation  
+        var size = list.length;
+        var indx = Math.round (target / list[size-1] * size);   // set starting position based on percent estimation  
         var min = indx - Math.round(size * 0.2);      // set intial min as 20% below indx
         if (min < 0) min = 0;
         var max = indx + Math.round(size * 0.2);      // set intial max as 20% above indx
@@ -58,6 +59,10 @@
           	// target must be in the upper half
           	min = indx;
           	indx = min + Math.floor((max - min) / 2);
+            if (target > list[max]) { 
+              max = indx + Math.round(size * 0.2);
+              if (max > size) max = size;
+            }  
           	if (min + 1 == max || min == max) {
               // ran out of numbers
               found = considerEndpoints (min, max);
