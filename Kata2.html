@@ -28,11 +28,11 @@
           return;
         }
         var size = list.length;
-        var indx = Math.round (target / list[size-1] * size);   // set starting position based on percent estimation  
+        var indx = Math.round (target / list[size-1] * (size-1));   // set starting position based on percent estimation  
         var min = indx - Math.round(size * 0.2);      // set intial min as 20% below indx
         if (min < 0) min = 0;
         var max = indx + Math.round(size * 0.2);      // set intial max as 20% above indx
-        if (max > size) max = size;
+        if (max > size-1) max = size-1;
         var iteration = 1;
         done = false;
         
@@ -48,6 +48,11 @@
           	// target must be in the lower half
           	max = indx;
           	indx = min + Math.floor((max - min) / 2);
+            if (target < list[min]) { 
+              // Need to re-adjust min
+              min = indx - Math.round(size * 0.2);
+              if (min < 0) min = 0;
+            }             
           	if (min + 1 == max || min == max) {
               // ran out of numbers
               found = considerEndpoints (min, max);
@@ -60,6 +65,7 @@
           	min = indx;
           	indx = min + Math.floor((max - min) / 2);
             if (target > list[max]) { 
+              // Need to re-adjust max
               max = indx + Math.round(size * 0.2);
               if (max > size) max = size;
             }  
